@@ -1,0 +1,41 @@
+Gramática Original
+S -> S+T | T
+T -> TF | F
+F -> (S) | S* | a
+
+Gramática Modificada
+S -> TS'
+S' -> +TS' | Ɛ
+T -> FT'
+T' -> FT' | Ɛ
+F -> (F') | F'
+F' -> S* | a
+
+Fist and Follow
+NT	Anulable	First		Follow
+S	No		(,a		*,$
+S'	Si		+,Ɛ		*,$
+T	No		(,a		+,$,*
+T'	Si		(,a,Ɛ		$,+,*
+F	No		(,a		(,a,$,+,*,)
+F'	No		(,a		),$,(,a,+,*
+
+Tabla de analisis LL
+Para S -> TS' se tiene First(TS') = {(,a}
+Para S' -> +TS' se tiene First(+TS') = {+}
+			Follow(S') = {*,$}
+Para T -> FT' se tiene First(FT') = {(,a}
+Para T' -> FT' se tiene First(FT') = {(,a}
+			Follow(T') = {$,+,*}
+Para F -> (F') se tiene First((F')) = {(}
+Para F -> F' se tiene First(F') = {a}
+Para F' -> S* se tiene First(F' -> S*) = {(}
+Para F' -> a se tiene First(F' -> a) = {a}
+
+	+		(		)		*		a		$
+S			S -> TS'					S -> TS'
+S'	S' -> +TS'					S' -> Ɛ				S' -> Ɛ
+T			T -> FT'					T -> FT'
+T'	T' -> Ɛ		T' -> FT'			T' -> Ɛ		T' -> FT'	T' -> Ɛ
+F			F -> (F')					F -> F'
+F'			F' -> S*					F' -> a

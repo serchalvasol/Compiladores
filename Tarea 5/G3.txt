@@ -1,0 +1,30 @@
+Gramática Original
+G -> PG | P
+P -> id : R
+R -> R id | Ɛ
+
+Gramática Modificada
+G -> PG'
+G' -> G | Ɛ
+P -> id : R
+R -> R id | Ɛ
+
+First and Follow
+NT	Anulable	First	Follow
+G	No		id	$
+G'	Si		id,Ɛ	$
+P	No		id	id,$
+R	Si		Ɛ	id
+
+Tabla de analisis LL
+Para G -> PG' se tiene First(PG') = {id}
+Para G' -> G se tiene First(G) = {id}
+			Follow(G') = {$}
+Para P -> id : R se tiene First(id : R) = {id}
+Para R -> R id se tiene Follow(R) = {$,id}
+
+	id		:		$
+G	G -> PG'
+G'	G' -> G				G' -> Ɛ
+P	P -> id : R
+R	R -> Ɛ				R -> Ɛ

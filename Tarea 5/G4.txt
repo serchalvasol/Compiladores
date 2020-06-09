@@ -1,0 +1,31 @@
+Gramática Original
+S -> ES | E
+E -> while E do E | id := E | id
+
+Gramática Modificada
+S -> ES'
+S'-> S | Ɛ
+E -> idE' | while E do E
+E' -> := E | Ɛ
+
+First and Follow
+NT	Anulable	First		Follow
+S	No		id,while	$	
+S'	Si		id,while	$
+E	No		id,while	id,while,$
+E'	Si		:,Ɛ		$,id,while
+
+Tabla de analisis
+Para S -> ES' se tiene First(ES') = {id,while}
+Para S'-> S se tiene First(S) = {id,while}
+			Follow(S') = {$}
+Para E -> idE' se tiene First(idE') = {id}
+Para E -> while E do E se tiene First(while E do E) = {while}
+Para E' -> := E se tiene First(:= E) = {:}
+			Follow(E') = {$,id,while}
+
+	id		while		do		:		=		$
+S	S -> ES'	S -> ES'
+S'	S'-> S		S'-> S								S'-> Ɛ
+E	E -> idE'	E -> while E do E
+E'	E' -> Ɛ		E' -> Ɛ				E' -> := E			E' -> Ɛ

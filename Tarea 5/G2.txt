@@ -1,0 +1,26 @@
+Gramática Original
+S -> (L) | a
+L -> L,S | S
+
+Gramática Modificada
+S -> (L) | a
+L -> SL'
+L' -> ,SL' | Ɛ
+
+First and Follow
+NT	Anulable	First	Follow
+S	No		(,a	,,$,)
+L	No		(,a	)
+L'	Si		,,Ɛ	$,)
+
+Tabla de analisis LL
+Para S -> (L) se tiene First((L)) = {(}
+Para S -> a se tiene First(a) = {a}
+Para L -> SL' se tiene First(SL') = {(,a}
+Para L' -> ,SL' se tiene First(,SL') = {,}
+			Follow(L') = {$,)}
+
+	(		)		a		,		$
+S	S -> (L)			S -> a
+L	L -> SL'			L -> SL'
+L'			L' -> Ɛ 			L' -> ,SL'	L' -> Ɛ
