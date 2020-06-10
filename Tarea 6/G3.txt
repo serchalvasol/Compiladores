@@ -1,0 +1,137 @@
+Gramática Original
+S -> A | xb
+A -> aAb | B
+B -> x
+
+Gramática Aumentada
+1.-S' -> S
+2.-S -> A
+3.-S -> xb
+4.-A -> aAb
+5.-A -> B
+6.-B -> x
+
+Cerradura({S' -> ●S,$})={
+S' -> ●S,$
+S -> ●A,$/b
+S -> ●xb,$/b
+A -> ●aAb,$/b/a/x
+A -> ●B,$/b/a/x
+B -> ●x,$/b/a/x
+}=I0
+
+goto(I0,S)={
+S' -> S●,$
+}=I1
+
+goto(I0,A)={
+S -> A●,$/b		k
+}=I2
+
+goto(I0,B)={
+A -> B●,$/b/a/x		k
+}=I3
+
+goto(I0,x)={
+S -> x●b,$/b		k
+B -> x●,$/b/a/x		k
+}=I4
+
+goto(I0,a)={
+A -> a●Ab,$/b/a/x	k
+A -> ●aAb,b
+A -> ●B,b
+B -> ●x,b
+}=I5
+
+goto(I4,b)={
+S -> xb●,$/b		k
+}=I6
+
+goto(I5,A)={
+A -> aA●b,$/b/a/x	k
+}=I7
+
+goto(I5,B)={
+A -> B●,b		k
+}=I8
+
+goto(I5,a)={
+A -> a●Ab,b		k
+A -> ●aAb,b
+A -> ●B,b
+B -> ●x,b
+}=I9
+
+goto(I5,x)={
+B -> x●,b		k
+}=I10
+
+goto(I7,b)={
+A -> aAb●,$/b/a/x	k
+}=I11
+
+goto(I9,A)={
+A -> aA●b,b		k
+}=I12
+
+goto(I9,B)={}=I8
+
+goto(I9,a)={}=I9
+
+goto(I9,x)={}=I10
+
+goto(I12,b)={
+A -> aAb●,b		k
+}=I13
+
+Tabla LR
+Edo	a	b	x	$	S	A	B
+0	d5		d4		1	2	3
+1				aceptar
+2		r2		r2
+3	r5	r5	r5	r5
+4	r6	d6	r6	r6
+5	d9		d10			7	8
+6		r3		r3
+7		d11
+8		r5
+9	d9		d10			12	8
+10		r6
+11	r4	r4	r4	r4
+12		d13
+13		r4
+
+Análisis LR
+Pila		Entrada		Accion
+$0		axbb$		d5
+$05		xbb$		d10
+$0510		bb$		reducir B -> x M1
+$058		bb$		reducir A -> B M1
+$057		bb$		d11
+$05711		b$		reducir A -> aAb M3
+$02		b$		reducir S -> A M1
+$01		b$		error
+
+Tabla LALR
+
+I38={A -> B●,$/b/a/x}
+I59={
+A -> a●Ab,$/b/a/x
+A -> ●aAb,b
+A -> ●B,b
+B -> ●x,b}
+I712={A -> aA●b,$/b/a/x}
+I1113={A -> aAb●,$/b/a/x}
+
+Edo	a	b	x	$	S	A	B
+0	d59		d4		1	2	38
+1				aceptar
+2		r2		r2
+38	r5	r5	r5	r5
+4	r6	d6	r6	r6
+5	d59		d10			712	38
+6		r3		r3
+712		d1113
+10		r6
+1113	r4	r4	r4	r4
