@@ -1,0 +1,74 @@
+Gramática Original
+S -> V=E
+E -> V | n
+V -> id
+
+Gramática Aumentada
+1.-S' -> S
+2.-S -> V=E
+3.-E -> V
+4.-E -> n
+5.-V -> id
+
+Cerradura({S' -> ●S,$})={
+S' -> ●S,$
+S -> ●V=E,$/=
+V -> ●id,=
+}=I0
+
+goto(I0,S)={
+S' -> S●,$
+}=I1
+
+goto(I0,V)={
+S -> V●=E,$/=
+}=I2
+
+goto(I0,id)={
+V -> id●,=
+}=I3
+
+goto(I2,=)={
+S -> V=●E,$/=
+E -> ●V,$/=
+E -> ●n,$/=
+V -> ●id,$/=
+}=I4
+
+goto(I4,E)={
+S -> V=E●,$/=
+}=I5
+
+goto(I4,V)={
+E -> V●,$/=
+}=I6
+
+goto(I4,n)={
+E -> n●,$/=
+}=I7
+
+goto(I4,id)={
+V -> id●,$/=
+}=I8
+
+Tabla LR
+Edo	id	=	n	$	S	E	V
+0	d3				1		2
+1				acepta
+2		d4
+3		r5
+4	d8		d7			5	6
+5		r2		r2
+6		r3		r3
+7		r4		r4
+8		r5		r5
+
+Análisis LR 
+Pila		Entrada	Accion
+$0		x=6$	d3
+$03		=6$	reducir V -> id M1
+$02		=6$	d4
+$024		6$	d7
+$0247		$	reducir E -> n M1
+$0245		$	reducir S -> V=E M3
+$01		$	aceptar
