@@ -1,0 +1,91 @@
+Grmática Original
+S -> SS+ | SS* | a
+
+Grmática Aumentada
+1.-S' -> S
+2.-S -> SS+
+3.-S -> SS*
+4.-S -> a
+
+Cerradura({S' -> ●S, $})={
+S' -> ●S, $
+S -> ●SS+,$/a
+S -> ●SS*,$/a
+S -> ●a,$/a
+}=I0
+
+goto(I0,S)={
+S' -> S●, $		
+S -> S●S+,$/a		
+S -> ●SS+,+/a/*
+S -> ●SS*,+/a/*
+S -> ●a,+/a/*
+S -> S●S*,$/a		
+}=I1
+
+goto(I0,a)={
+S -> a●,$/a
+}=I2
+
+goto(I1,S)={
+S -> SS●+,$/a
+S -> S●S+,+/a/*
+S -> ●SS+,+/a/*
+S -> ●SS*,+/a/*
+S -> ●a,+/a/*
+S -> S●S*,+/a/*
+S -> SS●*,$/a
+}=I3
+
+goto(I1,a)={
+S -> a●,+/a/*
+}=I4
+
+goto(I3,S)={}=I3
+
+goto(I3,+)={
+S -> SS+●,$/a
+}=I5
+
+goto(I3,*)={
+S -> SS*●,$/a
+}=I6
+
+goto(I3,a)={}=I4
+
+Tabla LR
+Edo	a		+		*		$		S
+0	d2								1
+1	d4						acepta		3
+2	r4						r4
+3	d4		d5		d6				3
+4	r4		r4		r4
+5	r2						r2
+6	r3						r3
+
+
+Análisis LR1
+Pila		Entrada		Accion
+$0		aa+a*$		d2
+$02		a+a*$		reducir S -> a  M1
+$01		a+a*$		d4
+$014		+a*$		reducir S -> a  M1
+$013		+a*$		d5
+$0135		a*$		reducir S -> SS+  M3
+$01		a*$		d4
+$014		*$		reducir S -> a  M1
+$013		*$		d6
+$0136		$		reducir S -> SS* M3
+$01		$		aceptar
+
+LALR
+
+I24={S -> a●,$/+/a/*}
+Edo	a		+		*		$		S
+0	d24								1
+1	d24						acepta		3
+24	r4		r4		r4		r4
+3	d24		d5		d6				3
+5	r2						r2
+6	r3						r3
+
