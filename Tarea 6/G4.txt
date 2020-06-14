@@ -1,0 +1,74 @@
+Gramática Original
+T -> TF | F
+F -> F* | a
+
+Gramática Aumentada
+1.-T' -> T
+2.-T -> TF
+3.-T -> F
+4.-F -> F*
+5.-F -> a
+
+Cerradura({T' -> ●T, $})={
+T' -> ●T, $
+T -> ●TF, $/a
+T -> ●F, $/a
+F -> ●F*, $/a/*
+F -> ●a, $/a/*
+}=I0
+
+goto(I0,T)={
+T' -> T●, $
+T -> T●F, $/a
+F -> ●F*, $/a/*
+F -> ●a, $/a/*
+}=I1
+
+goto(I0,F)={
+T -> F●, $/a
+F -> F●*, $/a/*
+}=I2
+
+goto(I0,a)={
+F -> a●, $/a/*
+}=I3
+
+goto(I1,F)={
+T -> TF●, $/a
+F -> F●*, $/a/*
+}=I4
+
+goto(I1,a)={}=I3
+
+goto(I2,*)={
+F -> F*●, $/a/*
+}=I5
+
+goto(I4,*)={}=I5
+
+Tabla LR
+Edo	a	*	$	T	F
+0	d3			1	2
+1	d3		aceptar		4
+2	r3	d5	r3
+3	r5	r5	r5
+4	r2	d5	r2
+5	r4	r4	r4
+
+
+Análisis a**aa
+Pila		Entrada		Acción
+$0		a**aa$		d3
+$03		**aa$		reducir F -> a M1
+$02		**aa$		d5
+$025		*aa$		reducir F -> F* M2
+$02		*aa$		d5
+$025		aa$		reducir F -> F* M2
+$02		aa$		reducir T -> F M1
+$01		aa$		d3
+$013		a$		reducir F -> a M1
+$014		a$		reducir T -> TF M2
+$01		a$		d3
+$013		$		reducir F -> a M1
+$014		$		reducir T -> TF M2
+$01		$		aceptar
